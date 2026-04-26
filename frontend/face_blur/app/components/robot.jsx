@@ -1,13 +1,20 @@
 import { Canvas, useFrame } from "@react-three/fiber";
-import { useGLTF } from "@react-three/drei";
+import { useGLTF, useTexture } from "@react-three/drei";
 import { useEffect, useMemo, useRef, useState } from "react";
 import * as THREE from "three";
 
 function FaceBlur({ blurred }) {
+  const texture = useTexture("/andre.jpeg");
+
   return (
     <mesh position={[0.6, 1.2, 0.45]}>
       <planeGeometry args={[0.8, 0.5]} />
-      <meshBasicMaterial color="orange" transparent opacity={blurred ? 1 : 0} depthTest={false} />
+      <meshBasicMaterial
+        map={texture}
+        transparent
+        opacity={blurred ? 1 : 0}
+        depthTest={false}
+      />
     </mesh>
   );
 }
