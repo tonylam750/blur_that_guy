@@ -1,5 +1,6 @@
 import { Link } from "react-router";
 import RobotPage from "./robot";
+import { TypeAnimation } from "react-type-animation";
 const Hero = () => {
 
  
@@ -10,13 +11,24 @@ const Hero = () => {
         <h1 className="my-8 text-3xl font-semibold tracking-wider sm:text-4xl md:text-5xl lg:text-6xl">
           Blur
           <br />
-          That Guy
+          That{" "}
+          <TypeAnimation
+            sequence={[
+              "Guy",
+              4000,
+              "***",
+              4000,
+            ]}
+            repeat={Infinity}
+            cursor={true}
+            speed={-100}
+          />
         </h1>
 
         <p className="max-w-[25rem] text-base tracking-wider text-gray-400 sm:text-lg lg:max-w-[40rem]">
           Lorem ipsum, dolor sit amet consectetur adipisicing elit. Nisi
           asperiores aperiam quam eos, repudiandae inventore ipsum, quidem
-          aspernatur voluptate veritatis fuga veniam fugit
+          
         </p>
 
         <div className="mt-12 flex gap-4">
