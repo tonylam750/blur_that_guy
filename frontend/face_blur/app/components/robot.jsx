@@ -52,7 +52,7 @@ function Robot({ mouse }) {
 
   return (
     <group
-      position={[1.4, -1, 0]}
+      position={[0, -1, 0]}
       scale={1}
       rotation={[-0.2, -0.2, 0]}
       onClick={(e) => {
@@ -75,18 +75,14 @@ export default function RobotPage() {
       mouse.current.x = (e.clientX / window.innerWidth) * 2 - 1;
       mouse.current.y = -((e.clientY / window.innerHeight) * 2 - 1);
     };
-
     window.addEventListener("mousemove", handleMouseMove);
     return () => window.removeEventListener("mousemove", handleMouseMove);
   }, []);
 
   return (
     <div
-      style={{
-        position: "absolute",
-        inset: 0,
-        cursor: hovered ? "pointer" : "default",
-      }}
+      className="w-full h-full"
+      style={{ cursor: hovered ? "pointer" : "default" }}
       onPointerEnter={() => setHovered(true)}
       onPointerLeave={() => setHovered(false)}
     >

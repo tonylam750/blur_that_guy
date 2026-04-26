@@ -44,7 +44,6 @@ async def upload_video(file: UploadFile = File(...)):
 
     raw_path.write_bytes(await file.read())
 
-    # Downscale to 1080p, keeps aspect ratio
     subprocess.run([
         "ffmpeg", "-y",
         "-i", str(raw_path),

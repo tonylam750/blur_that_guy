@@ -1,4 +1,3 @@
-import Spline from "@splinetool/react-spline";
 import { Link } from "react-router";
 import RobotPage from "./robot";
 const Hero = () => {
@@ -35,11 +34,6 @@ const Hero = () => {
           </Link>
         </div>
       </div>
-
-      {/* <Spline
-        scene="https://prod.spline.design/6BbrCFOI-xuxhfQM/scene.splinecode"
-        style={{ width: "60%", height: "700px" }}
-      /> */}
 
       <RobotPage/>
 

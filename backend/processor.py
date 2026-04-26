@@ -11,6 +11,7 @@ SAMPLE_EVERY = 3
 MAX_DISTANCE = 200
 MAX_MISSES = 30
 CONFIDENCE_LIMIT = 0.5
+OVERLAY_PATH = os.path.join(BASE_DIR, "andre.jpeg")
 
 
 def load_model():
@@ -153,8 +154,9 @@ def blur_face_in_video(video_path: str, output_path: str, frames_data: dict, sel
     width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
     height = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
 
-    tmp_path = output_path + ".tmp.mp4"
+    overlay_img = cv2.imread(OVERLAY_PATH)
 
+    tmp_path = output_path + ".tmp.mp4"
     writer = cv2.VideoWriter(
         tmp_path,
         cv2.VideoWriter_fourcc(*"mp4v"),
@@ -166,7 +168,6 @@ def blur_face_in_video(video_path: str, output_path: str, frames_data: dict, sel
 
     while True:
         ok, frame = cap.read()
-
         if not ok:
             break
 
@@ -174,18 +175,13 @@ def blur_face_in_video(video_path: str, output_path: str, frames_data: dict, sel
             if face["track_id"] != selected_track_id:
                 continue
 
-            x = face["x"]
-            y = face["y"]
-            w = face["w"]
-            h = face["h"]
+            x, y, w, h = face["x"], face["y"], face["w"], face["h"]
 
-            face_area = frame[y:y + h, x:x + w]
-
-            if face_area.size == 0:
+            if w <= 0 or h <= 0:
                 continue
 
-            blurred_face = cv2.GaussianBlur(face_area, (51, 51), 0)
-            frame[y:y + h, x:x + w] = blurred_face
+            resized_overlay = cv2.resize(overlay_img, (w, h))
+            frame[y:y+h, x:x+w] = resized_overlay
 
         writer.write(frame)
         frame_index += 1
@@ -194,32 +190,14 @@ def blur_face_in_video(video_path: str, output_path: str, frames_data: dict, sel
     writer.release()
 
     subprocess.run(
-        [
-            "ffmpeg",
-            "-y",
-            "-i",
-            tmp_path,
-            "-i",
-            video_path,
-            "-map",
-            "0:v:0",
-            "-map",
-            "1:a?",
-            "-vcodec",
-            "libx264",
-            "-acodec",
-            "aac",
-            "-shortest",
-            "-preset",
-            "fast",
-            "-movflags",
-            "+faststart",
-            output_path,
-        ],
+        ["ffmpeg", "-y", "-i", tmp_path, "-i", video_path,
+         "-map", "0:v:0", "-map", "1:a?",
+         "-vcodec", "libx264", "-acodec", "aac",
+         "-shortest", "-preset", "fast", "-movflags", "+faststart",
+         output_path],
         check=True,
         stdout=subprocess.DEVNULL,
         stderr=subprocess.DEVNULL,
     )
-
 
     os.remove(tmp_path)
