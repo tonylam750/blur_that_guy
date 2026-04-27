@@ -160,7 +160,7 @@ export default function FaceBlurUIPage() {
                   src={displayedVideo}
                   controls
                   onClick={(e) => e.stopPropagation()}
-                  className="w-full h-full object-contain object-top"
+                  className="w-full h-full object-contain"
                 />
                 {showOriginal && analysis && (
                   <div className="absolute inset-0 pointer-events-none">
@@ -196,7 +196,7 @@ export default function FaceBlurUIPage() {
         </div>
 
         
-        <div className="w-[350px] flex-shrink-0 flex flex-col overflow-hidden bg-[#111113] border-l border-[#1e1e22]">
+        <div className="w-[350px] flex-shrink-0 flex flex-col overflow-hidden bg-[#111113] border-l border-[#25252e]">
 
           <div className="border-b border-[#1e1e22]">
             <div className="px-4 py-2.5 text-[13px]  border-b border-[#1a1a1e]">
