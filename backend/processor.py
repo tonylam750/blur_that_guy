@@ -1,18 +1,17 @@
-import os
+from pathlib import Path
 import subprocess
 import cv2
 import math
 
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-PROTOTXT_PATH = os.path.join(BASE_DIR, "deploy.prototxt")
-MODEL_PATH = os.path.join(BASE_DIR, "face_model.caffemodel")
+BASE_DIR = Path(__file__).parent
+PROTOTXT_PATH = BASE_DIR / "deploy.prototxt"
+MODEL_PATH = BASE_DIR / "face_model.caffemodel"
+OVERLAY_PATH = BASE_DIR / "andre.jpeg"
 
 SAMPLE_EVERY = 3
 MAX_DISTANCE = 200
 MAX_MISSES = 30
 CONFIDENCE_LIMIT = 0.5
-OVERLAY_PATH = os.path.join(BASE_DIR, "andre.jpeg")
-
 
 def load_model():
     return cv2.dnn.readNetFromCaffe(PROTOTXT_PATH, MODEL_PATH)
@@ -200,4 +199,4 @@ def blur_face_in_video(video_path: str, output_path: str, frames_data: dict, sel
         stderr=subprocess.DEVNULL,
     )
 
-    os.remove(tmp_path)
+    Path(tmp_path).unlink()
